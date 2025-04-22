@@ -1,0 +1,12 @@
+Description:
+This project implements a simple file system (FS) in C, designed to manage files on a virtual disk. It supports fundamental file system operations such as creating, deleting, reading, writing, listing files, and managing file descriptors. The file system uses a bitmap to track block allocation, inodes to store file metadata, and a directory table for file management. It aims to provide a reliable and efficient solution for handling files on a virtual disk, ensuring consistency and robustness in different scenarios.
+
+Process:
+The file system begins with the make_fs() function, which initializes the metadata structures required to manage files, including the superblock, inode table, directory table, and bitmap. The superblock contains key offsets for the metadata structures, the inode table stores file metadata, and the bitmap tracks block allocation status. This setup lays the foundation for efficient file operations.
+
+Mounting the file system using mount_fs() loads these metadata structures into memory, enabling subsequent operations. Similarly, unmounting with umount_fs() ensures that any changes are saved to the disk and cleans up in-memory data structures. These functions guarantee synchronization between in-memory representations and the on-disk state.
+
+File operations include creating (fs_create()), deleting (fs_delete()), opening (fs_open()), and closing (fs_close()) files. These operations manage file descriptors, allocate or release resources as needed, and maintain consistency by validating inputs and ensuring proper cleanup. Reading and writing are handled by fs_read() and fs_write(), which work with both direct and indirect blocks to support files larger than the size of a single block. Additional functionality includes retrieving file sizes (fs_get_filesize()), listing files (fs_listfiles()), seeking within a file (fs_lseek()), and truncating file size (fs_truncate()).
+
+Problems:
+A problem I am facing is test case 8d and extra credit test case f. I attempted to resolve test8d and testecf by ensuring that writes beyond the current end-of-file allocate and zero-fill new blocks properly, and that attempts to write beyond the available free space return partial write counts rather than failing entirely. However, I still fail these test cases and I was not able to resolve the problem in time.
